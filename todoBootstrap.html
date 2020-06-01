@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Todo with Bootstrap</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <header id="main-header" class="text-white p-4">
+        <div class="container"> 
+            <input type="text" class="form-control" id="filter" placeholder="Search ...">
+        </div>
+    </header>
+    <div class="container">
+        <div id="main">
+            <h2>Add Items</h2>
+            <form id="addForm" class="form-inline mb-3">
+                <input type="text" class="form-control mr-2" id="item" placeholder="Add ...">
+                <input type="submit" class="btn btn-success" value="Submit">
+            </form>
+            <h2>Items</h2>
+            <ul id="items" class="list-group">
+                <li class="list-group-item">Item 1 <button class="btn btn-secondary float-right ">X</button></li>
+                <li class="list-group-item">Item 2 <button class="btn btn-secondary float-right ">X</button></li>
+                <li class="list-group-item">Item 3 <button class="btn btn-secondary float-right ">X</button></li>
+                <li class="list-group-item">Item 4 <button class="btn btn-secondary float-right ">X</button></li>
+            </ul> 
+        </div>
+    </div>
+ 
+    <script>
+        var form = document.getElementById('addForm');
+        var itemList = document.getElementById('items');
+        var filter = document.getElementById('filter');
+        form.addEventListener('submit', addItem);
+        itemList.addEventListener('click', removeItem);
+        filter.addEventListener('keyup', filterItems);
+
+        function addItem(e){
+            e.preventDefault();
+            var newItem = document.getElementById('item').value;
+            if(newItem === ''){ return };
+            var li = document.createElement('li');
+            li.className = 'list-group-item';
+            li.appendChild(document.createTextNode(newItem));
+            var deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn btn-secondary float-right';
+            deleteBtn.appendChild(document.createTextNode('X'));
+            li.appendChild(deleteBtn);
+            itemList.appendChild(li);
+            document.getElementById('item').value = '';
+        }
+
+        function removeItem(e){
+            if(e.target.classList.contains('btn-secondary')){
+                var li = e.target.parentElement;
+                itemList.removeChild(li);
+            }
+        }
+
+        function filterItems(e){
+            var text = e.target.value.toLowerCase();
+            var items = itemList.getElementsByTagName('li');
+            Array.from(items).forEach(function(item){
+                var itemName = item.firstChild.textContent;
+                if(itemName.toLowerCase().indexOf(text) != -1){
+                item.style.display = 'block';
+                } else {
+                item.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
